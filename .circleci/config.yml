@@ -34,7 +34,7 @@ workflows:
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           create-repo: true
           dockerfile: Dockerfile
-          path: ~/source/server
+          path: .
           region: AWS_REGION
           repo: asaripal-dev-basic-terraform-test
           skip-when-tags-exist: false
