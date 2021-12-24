@@ -40,8 +40,3 @@ workflows:
           repo: AWS_ECR_REPO_NAME
           skip-when-tags-exist: false
           tag: "latest"
-  deploy_workflow:
-    jobs:
-      - test:
-          requires:
-            - build_and_push_server_image
