@@ -3,38 +3,45 @@
 version: 2.1
 
 orbs:
-  node: circleci/node@5.0.0 #orb version
+  node: circleci/node@5.0.0
+  aws-ecr: circleci/aws-ecr@7.3.0
 
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  test-server:
+  test:
     working_directory: ~/source/server
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
       - image: cimg/node:12.16
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
       - checkout:
           path: ~/source
       - run:
-          name: "Run Hello World"
-          command: "echo Hello, World!"
-      - run:
           name: "Install dependencies"
-          command: "npm i"
+          command: "npm install"
       - run:
-          name: "Build Typescript Backend"
+          name: "Compile Typescript Backend"
           command: "npm run build"
       - run:
           name: "Run Tests"
           command: "npm test"
 
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  test-server-workflow:
+  build_and_push_server_image:
     jobs:
-      - test-server
+      - aws-ecr/build-and-push-image:
+          account-url: $AWS_ECR_URL
+          aws-access-key-id: $AWS_ACCESS_KEY_ID
+          aws-secret-access-key: $AWS_SECRET_ACCESS_KEY
+          create-repo: true
+          dockerfile: Dockerfile
+          no-output-timeout: 20m
+          path: ~/source/server
+          profile-name: myProfileName
+          region: $AWS_REGION
+          repo: $AWS_ECR_REPO_NAME
+          skip-when-tags-exist: false
+          tag: "latest"
+  deploy_workflow:
+    jobs:
+      - test:
+          requires:
+            - build_and_push_server_image
