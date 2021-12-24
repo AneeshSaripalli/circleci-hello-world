@@ -28,16 +28,26 @@ workflows:
   build_and_push_server_image:
     jobs:
       - aws-ecr/build-and-push-image:
-          account-url: $AWS_ECR_URL
-          aws-access-key-id: $AWS_ACCESS_KEY_ID
-          aws-secret-access-key: $AWS_SECRET_ACCESS_KEY
+          account-url:
+            type: env_var_name
+            default: AWS_ECR_URL
+          aws-access-key-id:
+            type: env_var_name
+            default: AWS_ACCESS_KEY_ID
+          aws-secret-access-key:
+            type: env_var_name
+            default: AWS_SECRET_ACCESS_KEY
           create-repo: true
           dockerfile: Dockerfile
           no-output-timeout: 20m
           path: ~/source/server
-          profile-name: myProfileName
-          region: $AWS_REGION
-          repo: $AWS_ECR_REPO_NAME
+          profile-name: somename
+          region:
+            type: env_var_name
+            default: AWS_REGION
+          repo:
+            type: env_var_name
+            default: $AWS_ECR_REPO_NAME
           skip-when-tags-exist: false
           tag: "latest"
   deploy_workflow:
