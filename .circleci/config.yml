@@ -39,3 +39,5 @@ workflows:
           repo: asaripal-dev-basic-terraform-test
           skip-when-tags-exist: false
           tag: "latest"
+          requires:
+            - test
