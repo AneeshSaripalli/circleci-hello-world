@@ -6,7 +6,8 @@
   "scripts": {
     "test": "mocha --recursive \"./dist/**/*_test.js\"",
     "build": "tsc",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "clean": "rm -rf dist/"
   },
   "keywords": [],
   "author": "",
