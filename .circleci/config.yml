@@ -19,6 +19,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: "Entire directory"
+          command: "cd server"
+      - run:
           name: "Run Hello World"
           command: "echo Hello, World!"
       - run:
