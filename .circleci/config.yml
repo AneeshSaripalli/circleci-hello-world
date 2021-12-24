@@ -33,9 +33,8 @@ workflows:
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           create-repo: true
           dockerfile: Dockerfile
-          no-output-timeout: 20m
           path: ~/source/server
           region: AWS_REGION
-          repo: AWS_ECR_REPO_NAME
+          repo: asaripal-dev-basic-terraform-test
           skip-when-tags-exist: false
           tag: "latest"
